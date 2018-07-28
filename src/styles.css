@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.container {
+    /* Flex Configuration */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*Styles*/
+    background-color: #2F4858;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.wrapper {
+    /*Styles*/
+    background-color: #51D6FF;
+    width: 30%;
+    height: 50%;
+}

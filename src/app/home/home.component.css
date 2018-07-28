@@ -1,0 +1,15 @@
+form {
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid #51D6FF;
+}
+
+input[type=text]:read-only {
+    background-color: #fff;
+}
+
+.submitRow {
+    justify-content: center;
+    padding-top: 20px;
+}
