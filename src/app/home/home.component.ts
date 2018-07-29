@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   }
 
   getData(){
-    this.http.get<Currency[]>('https://laravel-xoed.frb.io/api/rates/fetch').subscribe(result => {
+    this.http.get<Currency[]>('https://laravel-xoed.frb.io/api/rates/currencies').subscribe(result => {
       if(result.length > 0){
         this.currencyList = [];
         for(var i =0;i<result.length;i++){ 
@@ -54,8 +54,8 @@ export class HomeComponent implements OnInit {
   }
 
   updateRates()  {  
-    this.http.get('https://laravel-xoed.frb.io/api/fetch').subscribe(data =>{
-      console.log(data);
+    this.http.get('https://laravel-xoed.frb.io/api/rates/fetch').subscribe(data =>{
+      alert("Rates Updated !");
     });
   }
 
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
     Params = Params.append("amount", "500");
     Params = Params.append("currency", "AFN");
     Params = Params.append("published_at", "2018-07-26" );
-    console.log(Params);
+    console.log(Params.toString());
      this.http.post('https://laravel-xoed.frb.io/api/rates/convert',{ 
             params : Params
             ,httpOptions , observe: 'response'
