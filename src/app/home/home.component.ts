@@ -17,7 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class HomeComponent implements OnInit {
  
   public currencyList : String[];
-  public currency : Currency = new Currency(""); 
+  public currency : Currency = new Currency("");
 
   constructor(private http : HttpClient) { 
     this.getData();
@@ -25,7 +25,8 @@ export class HomeComponent implements OnInit {
   }
 
   getData(){
-    this.http.get<Currency[]>('https://laravel-xoed.frb.io/api/rates/currencies').subscribe(result => {
+    console.log(this.currency.api_url + 'rates/currencies');
+    this.http.get<Currency[]>(this.currency.api_url + 'rates/currencies').subscribe(result => {
       if(result.length > 0){
         this.currencyList = [];
         for(var i =0;i<result.length;i++){ 
@@ -54,12 +55,15 @@ export class HomeComponent implements OnInit {
   }
 
   updateRates()  {  
-    this.http.get('https://laravel-xoed.frb.io/api/rates/fetch').subscribe(data =>{
+
+    console.log(this.currency.api_url + 'rates/fetch');
+    this.http.get(this.currency.api_url + "rates/fetch").subscribe(data =>{
       alert("Rates Updated !");
     });
   }
 
   convert(){
+    console.log(this.currency.api_url + "rates/convert");
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded'  //updated,
@@ -69,18 +73,18 @@ export class HomeComponent implements OnInit {
     
     // Initialize Params Object
     let Params = new HttpParams();
-
+    console.log(this.currency.cur_date);
     // Begin assigning parameters
-    // Params = Params.append('amount', this.currency.amount);
-    // Params = Params.append('currency', this.currency.code);
-    // Params = Params.append('published_at', this.currency.cur_date);
+    Params = Params.append('amount', this.currency.amount);
+    Params = Params.append('currency', this.currency.code);
+    Params = Params.append('published_at', this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day);
 
-    Params = Params.append("amount", "500");
-    Params = Params.append("currency", "AFN");
-    Params = Params.append("published_at", "2018-07-26" );
+    // Params = Params.append("amount", "500");
+    // Params = Params.append("currency", "AFN");
+    // Params = Params.append("published_at", "2018-07-26" );
     console.log(Params.toString());
-     this.http.post('https://laravel-xoed.frb.io/api/rates/convert',{ 
-            params : Params
+     this.http.post(this.currency.api_url + "rates/convert",{ 
+            params : {amount: this.currency.amount, currency: this.currency.code, published_at: this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day }
             ,httpOptions , observe: 'response'
           }).subscribe(data => {
             console.log(data);
