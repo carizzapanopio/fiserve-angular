@@ -10,7 +10,7 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">Choose Date</div>
                         </div>
-                        <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" readonly placeholder="Date" />
+                        <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" readonly placeholder="Date" [(ngModel)]="currency.cur_date" />
                     </div>
                 </div>
             </div>
@@ -23,7 +23,8 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">Code</div>
                         </div>
-                        <input id="typeahead-focus" name="txtCode" type="text" class="form-control" [(ngModel)]="Code" [ngbTypeahead]="search" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)" #instance="ngbTypeahead" placeholder="Code" />
+                        <input id="typeahead-focus" name="txtCode" type="text" class="form-control" [(ngModel)]="currency.code" [ngbTypeahead]="search" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)" #instance="ngbTypeahead" placeholder="Code"
+                        />
                     </div>
                 </div>
                 <!-- Amount -->
@@ -32,7 +33,7 @@
                         <div class="input-group-prepend ">
                             <div class="input-group-text ">$</div>
                         </div>
-                        <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="Amount" (keyup)="validateAmount($event)" />
+                        <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="currency.amount" (keyup)="validateAmount($event)" />
                     </div>
                 </div>
             </div>

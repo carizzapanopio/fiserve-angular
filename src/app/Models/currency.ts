@@ -1,16 +1,15 @@
+ 
+
 export class Currency {
 
-    public Code : string;
-    public Name : string;
-    public Rate : number; 
-    public CurrencyDate : Date;
+    public code : string;
+    public name : string; 
+    public amount : string;
+    public cur_date : string;
 
-    constructor(){};
-
-    loadData(Code : string, Name : string, Rate : number, CurrencyDate : Date){
-        this.Code = Code; 
-        this.Rate = Rate;
-        this.CurrencyDate = CurrencyDate;
-    }
+    constructor(code: string){
+        this.code = code;
+    };
+ 
 
 }
