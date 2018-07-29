@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
  
   public currencyList : String[];
   public currency : Currency = new Currency(""); 
+  public apiUrl : string = 'https://laravel-xoed.frb.io';
 
   constructor(private http : HttpClient) { 
     this.getData();
@@ -62,8 +63,9 @@ export class HomeComponent implements OnInit {
   convert(){
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded'  //updated,
-        ,'Accept': 'application/json'
+       
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json' 
       })
     };
     
@@ -72,19 +74,34 @@ export class HomeComponent implements OnInit {
 
     // Begin assigning parameters
     // Params = Params.append('amount', this.currency.amount);
-    // Params = Params.append('currency', this.currency.code);
-    // Params = Params.append('published_at', this.currency.cur_date);
+    Params = Params.append('currency', this.currency.code);
+    Params = Params.append('published_at', this.currency.cur_date);
 
-    Params = Params.append("amount", "500");
-    Params = Params.append("currency", "AFN");
-    Params = Params.append("published_at", "2018-07-26" );
+    // Params = Params.append("amount", "500");
+    // Params = Params.append("currency", "AFN");
+    // Params = Params.append("published_at", "2018-07-26" );  
+    Params = Params.append("amount", '500');
+    //Params = Params.append("1", "AFN");
+    //Params = Params.append("2", "2018-07-26" );  
     console.log(Params.toString());
-     this.http.post('https://laravel-xoed.frb.io/api/rates/convert',{ 
-            params : Params
+     //this.http.post('https://laravel-xoed.frb.io/api/rates/convert',{ 
+    //  this.http.post('http://localhost/fiserve/public/api/rates/convert',{
+    //         //params :  JSON.stringify({"0" : "500","1" : "AFN", "2" : "2018-07-16"})
+    //         //params : {"0" : "500","1" : "AFN", "2" : "2018-07-16"}
+    //         //params : Params.toString()
+    //         params : Params
+    //         ,httpOptions , observe: 'response'
+    //       }).subscribe(data => {
+    //         console.log(data);
+    //       });
+
+    console.log(Params.toString());
+     this.http.post("http://localhost/fiserve/public/api/rates/convert",{ 
+            params : {amount: this.currency.amount, currency: this.currency.code, published_at: "2018-08-30"}
             ,httpOptions , observe: 'response'
           }).subscribe(data => {
             console.log(data);
-          });
+          }); 
   }
 
   // Format Number
