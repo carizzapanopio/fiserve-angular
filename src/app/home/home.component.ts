@@ -3,7 +3,7 @@ import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, Subject, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
 import { Currency } from '../Models/currency';
-import { HttpClient } from '@angular/common/http'; 
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';  
  
  
 
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   }
 
   getData(){
-    this.http.get<Currency[]>('https://laravel-xoed.frb.io/api/currencies').subscribe(result => {
+    this.http.get<Currency[]>('https://laravel-xoed.frb.io/api/rates/currencies').subscribe(result => {
       if(result.length > 0){
         this.currencyList = [];
         for(var i =0;i<result.length;i++){ 
@@ -53,11 +53,38 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  updateRates(){ 
-    console.log([this.currency.amount,this.currency.code,this.currency.cur_date]);
-    //  this.http.post('https://laravel-xoed.frb.io/api/convert', [this.currency.amount,this.currency.code,this.currency.cur_date]).subscribe(result => {
-    //   console.log(result);
-    //  });
+  updateRates()  {  
+    this.http.get('https://laravel-xoed.frb.io/api/rates/fetch').subscribe(data =>{
+      alert("Rates Updated !");
+    });
+  }
+
+  convert(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'  //updated,
+        ,'Accept': 'application/json'
+      })
+    };
+    
+    // Initialize Params Object
+    let Params = new HttpParams();
+
+    // Begin assigning parameters
+    // Params = Params.append('amount', this.currency.amount);
+    // Params = Params.append('currency', this.currency.code);
+    // Params = Params.append('published_at', this.currency.cur_date);
+
+    Params = Params.append("amount", "500");
+    Params = Params.append("currency", "AFN");
+    Params = Params.append("published_at", "2018-07-26" );
+    console.log(Params.toString());
+     this.http.post('https://laravel-xoed.frb.io/api/rates/convert',{ 
+            params : Params
+            ,httpOptions , observe: 'response'
+          }).subscribe(data => {
+            console.log(data);
+          });
   }
 
   // Format Number
