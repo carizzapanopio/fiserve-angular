@@ -17,8 +17,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class HomeComponent implements OnInit {
  
   public currencyList : String[];
+<<<<<<< HEAD
   public currency : Currency = new Currency("");
   public convertedRate : String[];
+=======
+  public currency : Currency = new Currency(""); 
+  public apiUrl : string = 'https://laravel-xoed.frb.io';
+>>>>>>> c2c2295893d9f99d3277797ddb13cdc9ef1e11a9
 
   constructor(private http : HttpClient) { 
     this.getData();
@@ -67,8 +72,9 @@ export class HomeComponent implements OnInit {
     console.log(this.currency.api_url + "rates/convert");
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded'  //updated,
-        ,'Accept': 'application/json'
+       
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json' 
       })
     };
     
@@ -76,6 +82,7 @@ export class HomeComponent implements OnInit {
     let Params = new HttpParams();
     console.log(this.currency.cur_date);
     // Begin assigning parameters
+
     Params = Params.append('amount', this.currency.amount);
     Params = Params.append('currency', this.currency.code);
     Params = Params.append('published_at', this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day);
@@ -91,6 +98,7 @@ export class HomeComponent implements OnInit {
             alert(data);
             // this.currency.convered_rate = data;
           });
+
   }
 
   // Format Number
