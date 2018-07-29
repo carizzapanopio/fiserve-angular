@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
  
   public currencyList : String[];
   public currency : Currency = new Currency("");
+  public convertedRate : String[];
 
   constructor(private http : HttpClient) { 
     this.getData();
@@ -87,7 +88,8 @@ export class HomeComponent implements OnInit {
             params : {amount: this.currency.amount, currency: this.currency.code, published_at: this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day }
             ,httpOptions , observe: 'response'
           }).subscribe(data => {
-            console.log(data);
+            alert(data);
+            // this.currency.convered_rate = data;
           });
   }
 

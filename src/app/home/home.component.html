@@ -1,7 +1,12 @@
-<div class="container">
-    <div class="wrapper">
 
-        <form action="">
+
+<div class="container">
+    <div class="wrapper row col-lg-4 col-md-6 col-sm-8 col-xs-10">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">Convert</a></li>
+            <li><a href="#">Update Rates</a></li>
+        </ul>
+        <form action="" >
 
             <!-- Calendar-->
             <div class="form-group row">
@@ -16,9 +21,9 @@
             </div>
 
             <!-- Rate and Amount -->
-            <div class="row">
+            <div class=" row">
                 <!-- Rate -->
-                <div class="col-xs-12 col-sm-5">
+                <div class="form-group col-sm-12 col-xs-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">Code</div>
@@ -28,12 +33,12 @@
                     </div>
                 </div>
                 <!-- Amount -->
-                <div class=" col-xs-12 col-sm-7 ">
+                <div class="form-group col-sm-12 col-xs-12  ">
                     <div class="input-group ">
                         <div class="input-group-prepend ">
                             <div class="input-group-text ">$</div>
                         </div>
-                        <!-- <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="currency.amount" (keyup)="validateAmount($event)" /> -->
+                        <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="currency.amount" (keyup)="validateAmount($event)" />
                     </div>
                 </div>
             </div>
@@ -48,6 +53,8 @@
                     <input type="submit " class="btn btn-warning " value="Convert" (click)="convert()">
                 </div>
             </div>
+
+            <!-- <p>Converted amount is: <span [(ngModel)]="currency.converted_rate"></span></p> -->
         </form>
     </div>
 </div>

@@ -7,6 +7,7 @@ export class Currency {
     public amount : string;
     public cur_date : string;
     public api_url : string;
+    public convered_rate: string;
 
     constructor(code: string){
         this.code = code;
