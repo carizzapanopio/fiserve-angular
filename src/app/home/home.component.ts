@@ -17,13 +17,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class HomeComponent implements OnInit {
  
   public currencyList : String[];
-<<<<<<< HEAD
+
   public currency : Currency = new Currency("");
   public convertedRate : String[];
-=======
+
   public currency : Currency = new Currency(""); 
   public apiUrl : string = 'https://laravel-xoed.frb.io';
->>>>>>> c2c2295893d9f99d3277797ddb13cdc9ef1e11a9
+
 
   constructor(private http : HttpClient) { 
     this.getData();
