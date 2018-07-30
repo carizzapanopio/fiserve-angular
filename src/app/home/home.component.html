@@ -15,7 +15,22 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">Choose Date</div>
                         </div>
-                        <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" readonly placeholder="Date" [(ngModel)]="currency.cur_date" />
+                        <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" readonly placeholder="Date" [(ngModel)]="currency.cur_date" #name="ngModel"/>
+
+                        <!-- <div *ngIf="txtDatePicker.invalid && (txtDatePicker.dirty || name.touched)"
+                            class="alert alert-danger">
+
+                          <div *ngIf="txtDatePicker.errors.required">
+                            Name is required.
+                          </div>
+                          <div *ngIf="txtDatePicker.errors.minlength">
+                            Name must be at least 4 characters long.
+                          </div>
+                          <div *ngIf="name.errors.forbiddenName">
+                            Name cannot be Bob.
+                          </div>
+
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -53,8 +68,10 @@
                     <input type="submit " class="btn btn-warning " value="Convert" (click)="convert()">
                 </div>
             </div>
-
             <!-- <p>Converted amount is: <span [(ngModel)]="currency.converted_rate"></span></p> -->
+            <div *ngIf="currency.converted_rate" class="alert alert-info" >
+                <p><b>$ {{ currency.amount }}</b> is equivalent to <b>{{ currency.code }} {{ currency.converted_rate }} </b></p>
+            </div>
         </form>
     </div>
 </div>

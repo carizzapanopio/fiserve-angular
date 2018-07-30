@@ -4,6 +4,7 @@ import {Observable, Subject, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
 import { Currency } from '../Models/currency';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';  
+// import {FormGroup, FormControl, Validators} from '@angular/forms';
  
  
 
@@ -20,10 +21,8 @@ export class HomeComponent implements OnInit {
 
   public currency : Currency = new Currency("");
   public convertedRate : String[];
-
-  public currency : Currency = new Currency(""); 
-  public apiUrl : string = 'https://laravel-xoed.frb.io';
-
+  // public API_URL : string = 'http://laravel-xoed.frb.io/api/';
+  public API_URL : string = "http://localhost/fiserve/public/api/";
 
   constructor(private http : HttpClient) { 
     this.getData();
@@ -31,8 +30,8 @@ export class HomeComponent implements OnInit {
   }
 
   getData(){
-    console.log(this.currency.api_url + 'rates/currencies');
-    this.http.get<Currency[]>(this.currency.api_url + 'rates/currencies').subscribe(result => {
+    console.log(this.API_URL + 'rates/currencies');
+    this.http.get<Currency[]>(this.API_URL + 'rates/currencies').subscribe(result => {
       if(result.length > 0){
         this.currencyList = [];
         for(var i =0;i<result.length;i++){ 
@@ -43,7 +42,10 @@ export class HomeComponent implements OnInit {
      });
   }
 
-  ngOnInit(){
+  ngOnInit(): void{
+    // this.currency = new FormGroup({
+      
+    // })
   }
   
   @ViewChild('instance') instance: NgbTypeahead;
@@ -62,14 +64,14 @@ export class HomeComponent implements OnInit {
 
   updateRates()  {  
 
-    console.log(this.currency.api_url + 'rates/fetch');
-    this.http.get(this.currency.api_url + "rates/fetch").subscribe(data =>{
+    console.log(this.API_URL + 'rates/fetch');
+    this.http.get(this.API_URL + "rates/fetch").subscribe(data =>{
       alert("Rates Updated !");
     });
   }
 
   convert(){
-    console.log(this.currency.api_url + "rates/convert");
+    console.log(this.API_URL + "rates/convert");
     const httpOptions = {
       headers: new HttpHeaders({
        
@@ -80,23 +82,31 @@ export class HomeComponent implements OnInit {
     
     // Initialize Params Object
     let Params = new HttpParams();
-    console.log(this.currency.cur_date);
+    // console.log(this.currency.cur_date.join(''));
     // Begin assigning parameters
 
-    Params = Params.append('amount', this.currency.amount);
-    Params = Params.append('currency', this.currency.code);
-    Params = Params.append('published_at', this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day);
-
+    // Params = Params.append('amount', this.currency.amount);
+    // Params = Params.append('currency', this.currency.code);
+    // Params = Params.append('published_at', this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day);
+    // let publishedAt = "";
+    // var obj = this.currency.cur_date;
+    // if(Object.keys(obj).length != 0){
+    //   console.log('yow');
+    //   publishedAt = this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day;
+    // }
     // Params = Params.append("amount", "500");
     // Params = Params.append("currency", "AFN");
     // Params = Params.append("published_at", "2018-07-26" );
-    console.log(Params.toString());
-     this.http.post(this.currency.api_url + "rates/convert",{ 
-            params : {amount: this.currency.amount, currency: this.currency.code, published_at: this.currency.cur_date.year + "-" +  this.currency.cur_date.month + "-" +  this.currency.cur_date.day }
+    // console.log(Params.toString());
+    // let currency = this;
+    let published_at = Object.values(this.currency.cur_date).join('-');
+     console.log(published_at);
+     this.http.post(this.API_URL + "rates/convert",{ 
+            params : {amount: this.currency.amount, currency: this.currency.code, published_at: published_at }
             ,httpOptions , observe: 'response'
           }).subscribe(data => {
-            alert(data);
-            // this.currency.convered_rate = data;
+            // alert(JSON.stringify(data));
+            this.currency.converted_rate = JSON.stringify(data);
           });
 
   }
