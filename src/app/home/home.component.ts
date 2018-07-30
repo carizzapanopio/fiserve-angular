@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
   public currency : Currency = new Currency("");
   public convertedRate : String[];
   public errorMessages : String[];
+  public updating : Boolean = false;
+  public updated : Boolean = false;
   public API_URL : string = 'https://laravel-xoed.frb.io/api/';
   // public API_URL : string = "http://localhost/fiserve/public/api/";
 
@@ -62,15 +64,23 @@ export class HomeComponent implements OnInit {
   }
 
   updateRates()  {  
+    this.resetTabContent();
     this.http.get(this.API_URL + "rates/fetch").subscribe(data =>{
-      alert("Rates Updated !");
+      this.updating = false;
+      this.updated = true;
     });
+  }
+
+  resetTabContent(){
+
+      this.updating = true;
+      this.updated = false;
   }
 
   convert($event){
 
     if(this.validateFields($event)){
-
+      this.currency.converted_rate = null;
       const httpOptions = {
         headers: new HttpHeaders({
          
@@ -95,7 +105,7 @@ export class HomeComponent implements OnInit {
           }, error => {
             this.errorMessages = [];
             for (var key in error.error) {
-              this.errorMessages.push( error.error[key][0].replace('params.','') );
+              this.errorMessages.push( error.error[key][0] );
             }
           });
 
@@ -104,28 +114,42 @@ export class HomeComponent implements OnInit {
   }
 
 
-  // Format Number
+  // Format Amount
   validateAmount($event){
-    var valid = /^\d{0,4}(\.\d{0,2})?$/.test(this.currency.amount),
-    val = this.currency.amount;
-  
-    if(!valid) { 
-      var val_split = val.toString().split('.',2);
 
-      if(val_split[1].length >= 2){
-        this.currency.amount = val_split[0] + "." + val_split[1].substr(0,2);
+    if(this.currency.amount){
+
+      this.currency.converted_rate = null;
+      var valid = /^\d{0,4}(\.\d{0,2})?$/.test(this.currency.amount),
+      val = this.currency.amount;
+    
+      if(!valid) { 
+        var val_split = val.toString().split('.',2);
+
+        if(val_split[1].length >= 2){
+          this.currency.amount = val_split[0] + "." + val_split[1].substr(0,2);
+        }
       }
+      this.valueChange($event);
     }
-    this.convert($event);
     
   }
 
-
+  /**
+   * [validateFields Format all fields]
+   * @param {[object]} $event Event Handler
+   */
   validateFields($event){
     this.errorMessages = [];
 
     if(! this.currency.cur_date){
       this.errorMessages.push("The <b>date</b> field is required.");
+    }else{
+      var currentDate = new Date();
+      if (new Date(Object.values(this.currency.cur_date).join('-')) > currentDate) {
+        
+        this.errorMessages.push("Rates for incoming days are not yet available.");
+      }
     }
 
     if(! this.currency.code){
@@ -134,6 +158,10 @@ export class HomeComponent implements OnInit {
 
     if(! this.currency.amount){
       this.errorMessages.push("The <b>amount</b> field is required.");
+    }else{
+      if(Number(this.currency.amount) <= 0){
+        this.errorMessages.push("The <b>amount</b> field is should be greater than 0.");
+      }
     }
 
     if(this.errorMessages.length == 0){
@@ -149,11 +177,9 @@ export class HomeComponent implements OnInit {
   }
 
   valueChange($event){
+    this.currency.converted_rate = null;
     if(this.currency.cur_date || this.currency.code || this.currency.amount){
-      this.currency.converted_rate = null;
-      this.convert($event);
-    }else{
-      this.currency.converted_rate = null;
+      this.validateFields($event);
     }
   }
 }

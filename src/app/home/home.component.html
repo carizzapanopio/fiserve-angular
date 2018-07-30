@@ -1,81 +1,86 @@
-
-
 <div class="container">
     <div class="wrapper row col-lg-4 col-md-6 col-sm-8 col-xs-10">
-        <ul class="nav nav-tabs">
-            <li class="active"><a  data-toggle="tab"  href="#convert">Convert</a></li>
-            <li><a  data-toggle="tab"  href="#update" (click)="updateRates()" >Update Rates</a></li>
-        </ul>
-        <!--<div class="tab-content">
-            <div id="convert" class="tab-pane fade in active">-->
-            <div id="convert" class="">
-                <form action="" >
-
-                    <ul class="" *ngIf="errorMessages">
-                      <li *ngFor="let error of errorMessages" [innerHTML]="error">
-                      </li>
-                    </ul>
-                    <!-- Calendar-->
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Choose Date</div>
+        <ngb-tabset class="tabset1">
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <div (click)="resetTabContent()">Convert</div>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <form action="" >
+                        <!-- Error Messages -->
+                        <ul class="text-danger" *ngIf="errorMessages">
+                          <li *ngFor="let error of errorMessages" [innerHTML]="error">
+                          </li>
+                        </ul>
+                        <!-- Calendar-->
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Choose Date</div>
+                                    </div>
+                                    <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" (keyup)="valueChange($event)" readonly placeholder="Date" [(ngModel)]="currency.cur_date" #name="ngModel"/>
                                 </div>
-                                <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" (keyup)="valueChange($event)" readonly placeholder="Date" [(ngModel)]="currency.cur_date" #name="ngModel"/>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Rate and Amount -->
-                    <div class=" row">
-                        <!-- Rate -->
-                        <div class="form-group col-sm-12 col-xs-12">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Code</div>
+                        <!-- Currency and Amount -->
+                        <div class=" row">
+                            <!-- Rate -->
+                            <div class="form-group col-sm-12 col-xs-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Code</div>
+                                    </div>
+                                    <input id="typeahead-focus" name="txtCode" type="text" class="form-control" [(ngModel)]="currency.code" [ngbTypeahead]="search" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)" #instance="ngbTypeahead" (keyup)="valueChange($event)" placeholder="Code"
+                                    />
                                 </div>
-                                <input id="typeahead-focus" name="txtCode" type="text" class="form-control" [(ngModel)]="currency.code" [ngbTypeahead]="search" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)" #instance="ngbTypeahead" (keyup)="valueChange($event)" placeholder="Code"
-                                />
+                            </div>
+                            <!-- Amount -->
+                            <div class="form-group col-sm-12 col-xs-12  ">
+                                <div class="input-group ">
+                                    <div class="input-group-prepend ">
+                                        <div class="input-group-text ">$</div>
+                                    </div>
+                                    <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="currency.amount" (keyup)="validateAmount($event)"  />
+                                </div>
                             </div>
                         </div>
-                        <!-- Amount -->
-                        <div class="form-group col-sm-12 col-xs-12  ">
-                            <div class="input-group ">
-                                <div class="input-group-prepend ">
-                                    <div class="input-group-text ">$</div>
-                                </div>
-                                <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="currency.amount" (keyup)="valueChange($event)"  />
+
+                        <!-- Conversion Message -->
+                        <div class="row" *ngIf="currency.converted_rate" >
+                            <p class="text-center"><b>${{ currency.amount }}</b> is equivalent to <b>{{ currency.code }} {{ currency.converted_rate }} </b></p>
+                        </div>
+
+
+                        <div class="row submitRow ">
+                            <!-- Clear Button -->
+                            <div class="btn-submit">
+                                <input type="reset" class="btn btn-warning" value="Clear"  (click)="clear($event)">
                             </div>
+                            <!-- Convert Rates Button -->
+                            <div class="btn-submit">
+                                <input type="submit " class="btn btn-success" value="Convert" (click)="convert($event)">
+                            </div>
+
                         </div>
+                    </form>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <div (click)="updateRates()">Update Rates</div>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row text-center update-content" *ngIf="updating" >
+                        <p>Please wait a moment while we update the rates.</p>
                     </div>
 
-
-                    <div class="row text-center" *ngIf="currency.converted_rate" >
-                        <p><b>${{ currency.amount }}</b> is equivalent to <b>{{ currency.code }} {{ currency.converted_rate }} </b></p>
+                    <div class="row text-center update-content" *ngIf="updated" >
+                        <p>Rates are successfully updated.</p>
                     </div>
-                    <!-- Update Rates Button -->
-                    <div class="row submitRow ">
-                        <!-- <div class="col-xs-4 ">
-                            <input type="submit " class="btn btn-success " value="Update Rates" (click)="updateRates()">
-                        </div> -->
-                        <!-- <div class="col-xs-1"></div> -->
-                        <div class="">
-                            <input type="submit " class="btn btn-success col-xs-2 " value="Convert" (click)="convert($event)">
-                        </div>
-
-                        <div class="">
-                            <input type="reset" class="btn btn-warning col-xs-2 " value="Clear"  (click)="clear($event)">
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div id="update" class="tab-pane fade">
-                <h3>Menu 1</h3>
-                <p>Some content in menu 1.</p>
-            </div>
-        <!--</div>-->
-        
-            <!-- <p>Converted amount is: <span [(ngModel)]="currency.converted_rate"></span></p> -->
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
     </div>
 </div>

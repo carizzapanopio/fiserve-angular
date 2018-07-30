@@ -2,7 +2,6 @@ form {
     box-sizing: border-box;
     border-radius: 20px;
     padding: 30px;
-    border: 1px solid #51D6FF;
 }
 
 input[type=text]:read-only {
@@ -17,4 +16,18 @@ input[type=text]:read-only {
 .updateRatesRow{
     justify-content: center;
     align-items: center;
+}
+
+
+.btn {
+    border-radius: 0;
+    width: 100%;
+}
+
+.btn-submit{
+	width:50%;
+}
+
+.update-content{
+    padding: 30px;
 }
