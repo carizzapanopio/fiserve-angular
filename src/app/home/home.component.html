@@ -3,75 +3,79 @@
 <div class="container">
     <div class="wrapper row col-lg-4 col-md-6 col-sm-8 col-xs-10">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#">Convert</a></li>
-            <li><a href="#">Update Rates</a></li>
+            <li class="active"><a  data-toggle="tab"  href="#convert">Convert</a></li>
+            <li><a  data-toggle="tab"  href="#update" (click)="updateRates()" >Update Rates</a></li>
         </ul>
-        <form action="" >
+        <!--<div class="tab-content">
+            <div id="convert" class="tab-pane fade in active">-->
+            <div id="convert" class="">
+                <form action="" >
 
-            <!-- Calendar-->
-            <div class="form-group row">
-                <div class="col-sm-12">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Choose Date</div>
+                    <ul class="" *ngIf="errorMessages">
+                      <li *ngFor="let error of errorMessages" [innerHTML]="error">
+                      </li>
+                    </ul>
+                    <!-- Calendar-->
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Choose Date</div>
+                                </div>
+                                <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" (keyup)="valueChange($event)" readonly placeholder="Date" [(ngModel)]="currency.cur_date" #name="ngModel"/>
+                            </div>
                         </div>
-                        <input type="text" name="txtDatePicker" id="txtDatePicker" class="form-control" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" readonly placeholder="Date" [(ngModel)]="currency.cur_date" #name="ngModel"/>
+                    </div>
 
-                        <!-- <div *ngIf="txtDatePicker.invalid && (txtDatePicker.dirty || name.touched)"
-                            class="alert alert-danger">
+                    <!-- Rate and Amount -->
+                    <div class=" row">
+                        <!-- Rate -->
+                        <div class="form-group col-sm-12 col-xs-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Code</div>
+                                </div>
+                                <input id="typeahead-focus" name="txtCode" type="text" class="form-control" [(ngModel)]="currency.code" [ngbTypeahead]="search" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)" #instance="ngbTypeahead" (keyup)="valueChange($event)" placeholder="Code"
+                                />
+                            </div>
+                        </div>
+                        <!-- Amount -->
+                        <div class="form-group col-sm-12 col-xs-12  ">
+                            <div class="input-group ">
+                                <div class="input-group-prepend ">
+                                    <div class="input-group-text ">$</div>
+                                </div>
+                                <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="currency.amount" (keyup)="valueChange($event)"  />
+                            </div>
+                        </div>
+                    </div>
 
-                          <div *ngIf="txtDatePicker.errors.required">
-                            Name is required.
-                          </div>
-                          <div *ngIf="txtDatePicker.errors.minlength">
-                            Name must be at least 4 characters long.
-                          </div>
-                          <div *ngIf="name.errors.forbiddenName">
-                            Name cannot be Bob.
-                          </div>
 
+                    <div class="row text-center" *ngIf="currency.converted_rate" >
+                        <p><b>${{ currency.amount }}</b> is equivalent to <b>{{ currency.code }} {{ currency.converted_rate }} </b></p>
+                    </div>
+                    <!-- Update Rates Button -->
+                    <div class="row submitRow ">
+                        <!-- <div class="col-xs-4 ">
+                            <input type="submit " class="btn btn-success " value="Update Rates" (click)="updateRates()">
                         </div> -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rate and Amount -->
-            <div class=" row">
-                <!-- Rate -->
-                <div class="form-group col-sm-12 col-xs-12">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Code</div>
+                        <!-- <div class="col-xs-1"></div> -->
+                        <div class="">
+                            <input type="submit " class="btn btn-success col-xs-2 " value="Convert" (click)="convert($event)">
                         </div>
-                        <input id="typeahead-focus" name="txtCode" type="text" class="form-control" [(ngModel)]="currency.code" [ngbTypeahead]="search" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)" #instance="ngbTypeahead" placeholder="Code"
-                        />
-                    </div>
-                </div>
-                <!-- Amount -->
-                <div class="form-group col-sm-12 col-xs-12  ">
-                    <div class="input-group ">
-                        <div class="input-group-prepend ">
-                            <div class="input-group-text ">$</div>
-                        </div>
-                        <input type="number" name="txtAmount " id="inlineFormGroupAmount " class="form-control " placeholder="Amount" [(ngModel)]="currency.amount" (keyup)="validateAmount($event)" />
-                    </div>
-                </div>
-            </div>
 
-            <!-- Update Rates Button -->
-            <div class="row submitRow ">
-                <div class="col-xs-4 ">
-                    <input type="submit " class="btn btn-success " value="Update Rates" (click)="updateRates()">
-                </div>
-                <div class="col-xs-1"></div>
-                <div class="col-xs-4 ">
-                    <input type="submit " class="btn btn-warning " value="Convert" (click)="convert()">
-                </div>
+                        <div class="">
+                            <input type="reset" class="btn btn-warning col-xs-2 " value="Clear"  (click)="clear($event)">
+                        </div>
+                    </div>
+                </form>
             </div>
+            <div id="update" class="tab-pane fade">
+                <h3>Menu 1</h3>
+                <p>Some content in menu 1.</p>
+            </div>
+        <!--</div>-->
+        
             <!-- <p>Converted amount is: <span [(ngModel)]="currency.converted_rate"></span></p> -->
-            <div *ngIf="currency.converted_rate" class="alert alert-info" >
-                <p><b>$ {{ currency.amount }}</b> is equivalent to <b>{{ currency.code }} {{ currency.converted_rate }} </b></p>
-            </div>
-        </form>
     </div>
 </div>

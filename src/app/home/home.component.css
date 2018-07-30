@@ -13,3 +13,8 @@ input[type=text]:read-only {
     justify-content: center;
     padding-top: 20px;
 }
+
+.updateRatesRow{
+    justify-content: center;
+    align-items: center;
+}
