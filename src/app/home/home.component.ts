@@ -124,7 +124,6 @@ export class HomeComponent implements OnInit {
   validateFields($event){
     this.errorMessages = [];
 
-      console.log(this.currency.code);
     if(! this.currency.cur_date){
       this.errorMessages.push("The <b>date</b> field is required.");
     }
