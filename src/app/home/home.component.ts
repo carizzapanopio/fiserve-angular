@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   public currency : Currency = new Currency("");
   public convertedRate : String[];
   public errorMessages : String[];
-  public API_URL : string = 'http://laravel-xoed.frb.io/api/';
+  public API_URL : string = 'https://laravel-xoed.frb.io/api/';
   // public API_URL : string = "http://localhost/fiserve/public/api/";
 
   constructor(private http : HttpClient) { 
